@@ -238,7 +238,7 @@ if(!empty($URL))
         }
     }
 } else{
-    echo 'url为空';
+    echo '';
 }
 
 ob_end_flush();
