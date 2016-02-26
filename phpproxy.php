@@ -2,8 +2,6 @@
 /**
  */
 
-
-
 class DataTransport
 {
     public static $response="";
