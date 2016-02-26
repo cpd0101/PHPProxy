@@ -30,13 +30,13 @@ class DataTransport
         $hook_target = $hook_target . $hook_url_temp;
 
         // 替换基本的 / 根引用 成本网址的根引用
-        $response = preg_replace('/href=\"\//is', 'href="' . $hook_target , $response);
-        $response = preg_replace('/src=\"\//is', 'src="' . $hook_target , $response);
-        $response = preg_replace("/url\('\//is", 'url(\'' . $hook_target , $response);
+        // $response = preg_replace('/href=\"\//is', 'href="' . $hook_target , $response);
+        // $response = preg_replace('/src=\"\//is', 'src="' . $hook_target , $response);
+        // $response = preg_replace("/url\('\//is", 'url(\'' . $hook_target , $response);
         // 替换 http绝对引用 为 本网址的相对引用
-        $http_abs_ref = 'href="' . $_SERVER['PHP_SELF'] . '?url=http';
-        $response = preg_replace('/href=\"http/i', $http_abs_ref , $response);
-        $response = preg_replace('/src=\"http/i', $http_abs_ref , $response);
+        // $http_abs_ref = 'href="' . $_SERVER['PHP_SELF'] . '?url=http';
+        // $response = preg_replace('/href=\"http/i', $http_abs_ref , $response);
+        // $response = preg_replace('/src=\"http/i', $http_abs_ref , $response);
         return $response;
     }
     public static function go($url, $postdata='',$mode="native")
