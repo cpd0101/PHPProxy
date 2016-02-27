@@ -88,15 +88,15 @@ class DataTransport
 
                 curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
             } else {
-                $cookie_file = dirname(__FILE__).'/cookie.txt';
+                $cookie_file = dirname(__FILE__).'/cookie.temp.txt';
                 if (self::$has_no_cookie) {
-                    curl_setopt($ch, CURLOPT_COOKIEJAR,  $cookie_file); //存储cookies
+                    curl_setopt($ch, CURLOPT_COOKIEJAR,  $cookie_file); // 存储cookies
                     curl_exec($ch);
                     curl_close($ch);
                     self::$has_no_cookie = false;
                     return self::Post_CURL($url, $postdata,$mode);
                 } else {
-                    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
+                    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file); // 设置cookies
                 }
             }
 
