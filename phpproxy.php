@@ -37,6 +37,7 @@ class DataTransport
         $response = preg_replace('/src=\"http/i', $http_abs_ref , $response);
         return $response;
     }
+
     public static function go($url, $postdata='',$mode="native")
     {
         if(function_exists("curl_init")){
@@ -171,7 +172,6 @@ class DataTransport
 
         }
     }
-
 
     private static function Post_FILE_GET_CONTENTS($url, $post = null)
     {
