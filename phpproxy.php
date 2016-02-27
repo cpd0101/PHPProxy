@@ -192,14 +192,54 @@ class DataTransport
     }
 }
 
+//定义是否检测请求来源的开关常量
+define( 'ENABLE_CHECKREFER' , true);
+
+//定义refer白名单(充许通过的来源地址)
+$refWhiteList=array(
+    '^http:\/\/shejipai.cn\/',
+
+    '^http:\/\/127.0.0.1\/',
+
+    '^http:\/\/hao.shejipai.cn\/',
+
+    '^http:\/\/www.shejipai.cn\/',
+);
+
+/**
+ * 网站请求,校验来源地址
+ *
+ * @author wen gong<bestphper@126.com>
+ * @param string $refWhiteList 域名白名单
+ * @return bool
+ */
+function checkrefer( $refWhiteList ){
+    //判断refer校验开关,是否开启
+    if( !defined( 'ENABLE_CHECKREFER' ) || ENABLE_CHECKREFER == false ){
+        return true;
+    }else{
+        if(isset($_SERVER['HTTP_REFERER'])){
+            $ref = $_SERVER['HTTP_REFERER'];
+            if( strpos( $ref, 'http://' ) !== 0 && strpos( $ref , 'https://' ) !== 0 ){
+                $ref = 'http://' . $ref;
+            }
+            foreach ( $refWhiteList as $item ){
+                if( preg_match( "/{$item}/i" , $ref ) ){
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            return false;
+        }
+    }
+}
 
 ob_start();
 
 @$URL=$_REQUEST['url'];
 
-
-
-if(!empty($URL))
+if(!empty($URL) && checkrefer($refWhiteList))
 {
 
     $postArray=array();
