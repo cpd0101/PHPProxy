@@ -127,7 +127,7 @@ class DataTransport
             /* foreach ( $header_text as $header ) {
                  header( $header );
              }
- */
+            */
             return $contents;
 
         } else {
@@ -208,8 +208,6 @@ $refWhiteList=array(
 
 /**
  * 网站请求,校验来源地址
- *
- * @author wen gong<bestphper@126.com>
  * @param string $refWhiteList 域名白名单
  * @return bool
  */
