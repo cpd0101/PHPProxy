@@ -197,11 +197,9 @@ define( 'ENABLE_CHECKREFER' , true);
 $refWhiteList=array(
     '^http:\/\/shejipai.cn\/',
 
-    '^http:\/\/127.0.0.1\/',
+    '^http:\/\/www.shejipai.cn\/',
 
     '^http:\/\/hao.shejipai.cn\/',
-
-    '^http:\/\/www.shejipai.cn\/',
 );
 
 /**
