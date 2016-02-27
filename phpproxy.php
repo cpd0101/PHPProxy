@@ -1,6 +1,4 @@
 <?php
-/**
- */
 
 class DataTransport
 {
@@ -30,13 +28,13 @@ class DataTransport
         $hook_target = $hook_target . $hook_url_temp;
 
         // 替换基本的 / 根引用 成本网址的根引用
-        // $response = preg_replace('/href=\"\//is', 'href="' . $hook_target , $response);
-        // $response = preg_replace('/src=\"\//is', 'src="' . $hook_target , $response);
-        // $response = preg_replace("/url\('\//is", 'url(\'' . $hook_target , $response);
+        $response = preg_replace('/href=\"\//is', 'href="' . $hook_target , $response);
+        $response = preg_replace('/src=\"\//is', 'src="' . $hook_target , $response);
+        $response = preg_replace("/url\('\//is", 'url(\'' . $hook_target , $response);
         // 替换 http绝对引用 为 本网址的相对引用
-        // $http_abs_ref = 'href="' . $_SERVER['PHP_SELF'] . '?url=http';
-        // $response = preg_replace('/href=\"http/i', $http_abs_ref , $response);
-        // $response = preg_replace('/src=\"http/i', $http_abs_ref , $response);
+        $http_abs_ref = 'href="' . $_SERVER['PHP_SELF'] . '?url=http';
+        $response = preg_replace('/href=\"http/i', $http_abs_ref , $response);
+        $response = preg_replace('/src=\"http/i', $http_abs_ref , $response);
         return $response;
     }
     public static function go($url, $postdata='',$mode="native")
@@ -181,7 +179,7 @@ class DataTransport
         if (is_array($post)) {
             ksort($post);
             $context['http'] = array (
-                'timeout'=>10,
+                'timeout'=> 10,
                 'method' => 'POST',
                 'header' => 'Content-type: application/x-www-form-urlencoded',
                 'content' => http_build_query($post, '', '&'),
@@ -192,10 +190,10 @@ class DataTransport
     }
 }
 
-//定义是否检测请求来源的开关常量
+// 定义是否检测请求来源的开关常量
 define( 'ENABLE_CHECKREFER' , true);
 
-//定义refer白名单(充许通过的来源地址)
+// 定义refer白名单(充许通过的来源地址)
 $refWhiteList=array(
     '^http:\/\/shejipai.cn\/',
 
@@ -211,23 +209,23 @@ $refWhiteList=array(
  * @param string $refWhiteList 域名白名单
  * @return bool
  */
-function checkrefer( $refWhiteList ){
-    //判断refer校验开关,是否开启
-    if( !defined( 'ENABLE_CHECKREFER' ) || ENABLE_CHECKREFER == false ){
+function checkrefer( $refWhiteList ) {
+    // 判断refer校验开关,是否开启
+    if ( !defined( 'ENABLE_CHECKREFER' ) || ENABLE_CHECKREFER == false ) {
         return true;
-    }else{
-        if(isset($_SERVER['HTTP_REFERER'])){
+    } else {
+        if (isset($_SERVER['HTTP_REFERER'])) {
             $ref = $_SERVER['HTTP_REFERER'];
-            if( strpos( $ref, 'http://' ) !== 0 && strpos( $ref , 'https://' ) !== 0 ){
+            if ( strpos( $ref, 'http://' ) !== 0 && strpos( $ref , 'https://' ) !== 0 ) {
                 $ref = 'http://' . $ref;
             }
-            foreach ( $refWhiteList as $item ){
+            foreach ( $refWhiteList as $item ) {
                 if( preg_match( "/{$item}/i" , $ref ) ){
                     return true;
                 }
             }
             return false;
-        }else{
+        } else {
             return false;
         }
     }
@@ -242,38 +240,39 @@ if(!empty($URL) && checkrefer($refWhiteList))
 
     $postArray=array();
 
-//文件处理
-    if(!empty($_FILES)){
+    // 文件处理
+    if (!empty($_FILES)) {
         foreach($_FILES as $key=>$value){
             move_uploaded_file($value['tmp_name'], $value['name']);
             $postArray[$key]='@'.realpath($value['name']);
         }
     }
 
-//处理POST数据
+    // 处理POST数据
     foreach($_POST as $key=>$value){
             $postArray[$key]=$value;
     }
 
-//获取数据
+    // 获取数据
     DataTransport::go($URL,$postArray);
 
-//处理数据
-
+    // 处理数据
     foreach ( preg_split( '/[\r\n]+/', DataTransport::$header ) as $headertext  ) {
         header($headertext);
     }
-//Hook所有url
-    DataTransport::$response = DataTransport::hook_url($URL, DataTransport::$response);
+
+    // Hook所有url
+    // DataTransport::$response = DataTransport::hook_url($URL, DataTransport::$response);
+
     print(DataTransport::$response);
 
-//删除临时文件
-    if(!empty($_FILES)){
+    // 删除临时文件
+    if (!empty($_FILES)) {
         foreach($_FILES as $key=>$value){
             unlink($value['name']);
         }
     }
-} else{
+} else {
     echo '';
 }
 
