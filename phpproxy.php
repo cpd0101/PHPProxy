@@ -106,10 +106,10 @@ class DataTransport
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_BINARYTRANSFER,true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:"));
+            // curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:"));
             curl_setopt($ch, CURLOPT_HEADER, true);
             curl_setopt($ch, CURLOPT_HTTP_VERSION, '1.0'); // 使用 Http1.0 避免chunked
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60); // 设置超时s
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15); // 设置超时, 单位s
             curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
             curl_setopt($ch, CURLOPT_USERAGENT, self::$CURL_user_agent ? self::$CURL_user_agent : @$_SERVER['HTTP_USER_AGENT']);
 
@@ -124,7 +124,7 @@ class DataTransport
 
             $status = curl_getinfo( $ch );
 
-            curl_close( $ch );
+            curl_close($ch);
         }
 
         // Split header text into an array.
