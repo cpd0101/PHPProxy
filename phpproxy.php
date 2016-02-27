@@ -100,8 +100,6 @@ class DataTransport
             $getresponse = curl_exec($ch);
             list( $header, $contents ) = preg_split( '/([\r\n][\r\n])\\1/', $getresponse, 2 );
 
-
-
             if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == '200') {
                 $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
                 self::$header = substr($getresponse, 0, $headerSize);
