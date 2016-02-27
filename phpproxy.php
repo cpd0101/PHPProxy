@@ -8,6 +8,7 @@ class DataTransport
     public static $CURL_enable_jsonp    = false;
     public static $CURL_enable_native   = true;
     public static $CURL_valid_url_regex = '/.*/';
+    public static $CURL_no_cookie = true;
     public static $CURL_SendCookie="";
     public static $CURL_SendSession="";
     public static $CURL_mode="native";
@@ -84,13 +85,21 @@ class DataTransport
                     $cookie[] = SID;
                 }
                 $cookie = implode( '; ', $cookie );
+
                 curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
             } else {
-                curl_setopt($ch, CURLOPT_COOKIEJAR,  self::$CURL_SendCookie); //存储cookies
-                curl_exec($ch);
-                curl_close($ch);
-                return self::Post_CURL($url, $postdata,$mode);
+                $cookie_file = dirname(__FILE__).'/cookie.txt';
+                if (self::$CURL_no_cookie) {
+                    curl_setopt($ch, CURLOPT_COOKIEJAR,  $cookie_file); //存储cookies
+                    curl_exec($ch);
+                    curl_close($ch);
+                    self::$CURL_no_cookie = false;
+                    return self::Post_CURL($url, $postdata,$mode);
+                } else {
+                    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
+                }
             }
+
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_BINARYTRANSFER,true);
