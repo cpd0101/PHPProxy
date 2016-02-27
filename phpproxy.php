@@ -84,8 +84,12 @@ class DataTransport
                     $cookie[] = SID;
                 }
                 $cookie = implode( '; ', $cookie );
-
                 curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
+            } else {
+                curl_setopt($ch, CURLOPT_COOKIEJAR,  self::$CURL_SendCookie); //存储cookies
+                curl_exec($ch);
+                curl_close($ch);
+                return self::Post_CURL($url, $postdata,$mode);
             }
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
