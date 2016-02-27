@@ -87,7 +87,10 @@ class DataTransport
                 $cookie = implode( '; ', $cookie );
 
                 curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
-            } else {
+            }
+
+            // 需要主动获取cookie
+            if ($_REQUEST['cookie']) {
                 $cookie_file = dirname(__FILE__).'/cookie.temp.txt';
                 if (self::$has_no_cookie) {
                     curl_setopt($ch, CURLOPT_COOKIEJAR,  $cookie_file); // 存储cookies
