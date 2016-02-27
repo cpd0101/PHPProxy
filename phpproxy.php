@@ -91,7 +91,7 @@ class DataTransport
 
             // 需要主动获取cookie
             if ($_REQUEST['cookie']) {
-                $cookie_file = dirname(__FILE__).'/cookie.temp.txt';
+                $cookie_file = dirname(__FILE__).'/cookie.txt';
                 if (self::$has_no_cookie) {
                     curl_setopt($ch, CURLOPT_COOKIEJAR,  $cookie_file); // 存储cookies
                     curl_exec($ch);
